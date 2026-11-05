@@ -22,17 +22,20 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
 <script>
-  // Set this to your CloudFront domain. The distribution must be deployed and the HLS files uploaded.
-  const playlistUrl = 'https://REPLACE_WITH_CLOUDFRONT_DOMAIN/output/forest-video/index.m3u8';
+  // HLS playlist served by the StreamNest CloudFront distribution. Change the domain if you deploy your own.
+  const playlistUrl = 'https://d3l5ifei2p2ay4.cloudfront.net/output/forest-video/index.m3u8';
   const video = document.getElementById('video');
   const status = document.getElementById('status');
-  if (playlistUrl.includes('REPLACE_WITH')) {
-    status.textContent = 'Edit playlistUrl in player/index.html to your CloudFront domain.';
-  } else if (window.Hls && Hls.isSupported()) {
+  if (window.Hls && Hls.isSupported()) {
     const hls = new Hls();
     hls.loadSource(playlistUrl);
     hls.attachMedia(video);
-    hls.on(Hls.Events.ERROR, (_, data) => { if (data.fatal) status.textContent = 'HLS error: ' + data.details; });
+    hls.on(Hls.Events.ERROR, (_, data) => {
+      if (data.fatal) {
+        status.textContent = 'Could not load the stream (' + data.details + '). ' +
+          'If the browser console shows a CORS error, this page\'s origin is not allowed by CloudFront.';
+      }
+    });
   } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.src = playlistUrl;
   } else {
