@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudFrontReadOutputOnly",
+      "Effect": "Allow",
+      "Principal": {"Service": "cloudfront.amazonaws.com"},
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::REPLACE_WITH_BUCKET_NAME/output/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:cloudfront::REPLACE_WITH_AWS_ACCOUNT_ID:distribution/REPLACE_WITH_DISTRIBUTION_ID"
+        }
+      }
+    }
+  ]
+}

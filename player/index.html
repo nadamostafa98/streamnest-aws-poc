@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StreamNest | Streaming PoC</title>
+  <style>
+    body { margin: 0; background: #0e201a; color: #f2f7f3; font: 16px system-ui, sans-serif; }
+    main { max-width: 850px; margin: 8vh auto; padding: 24px; }
+    video { width: 100%; background: #000; border-radius: 12px; }
+    .note { color: #bdcec3; font-size: 0.9rem; line-height: 1.6; }
+    a { color: #a8e6c4; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>StreamNest</h1>
+  <p>Proof of concept: HLS playback through Amazon CloudFront.</p>
+  <video id="video" controls playsinline></video>
+  <p id="status" role="status"></p>
+  <p class="note">Use a video you own or are licensed to use. The original demonstration used footage credited to Ari ichorul / Vecteezy; that video is not redistributed here.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+<script>
+  // Set this to your CloudFront domain. The distribution must be deployed and the HLS files uploaded.
+  const playlistUrl = 'https://REPLACE_WITH_CLOUDFRONT_DOMAIN/output/forest-video/index.m3u8';
+  const video = document.getElementById('video');
+  const status = document.getElementById('status');
+  if (playlistUrl.includes('REPLACE_WITH')) {
+    status.textContent = 'Edit playlistUrl in player/index.html to your CloudFront domain.';
+  } else if (window.Hls && Hls.isSupported()) {
+    const hls = new Hls();
+    hls.loadSource(playlistUrl);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.ERROR, (_, data) => { if (data.fatal) status.textContent = 'HLS error: ' + data.details; });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = playlistUrl;
+  } else {
+    status.textContent = 'HLS playback is not supported in this browser.';
+  }
+</script>
+</body>
+</html>
