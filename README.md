@@ -31,12 +31,11 @@ CloudFront ──(OAC, on cache miss)──► S3 bucket (private, eu-north-1)
 | `policies/lambda-s3-policy.example.json` | Lambda role permissions: read `input/*`, write `output/*` |
 | `policies/cloudfront-oac-bucket-policy.example.json` | Bucket policy letting one CloudFront distribution read `output/*` |
 | `scripts/check-output.sh` | Lists the generated HLS files with the AWS CLI |
-| `LICENSE-NOTICE.md` | Notes on the video footage, FFmpeg and HLS.js licenses |
+| `media/sample.mp4` | Sample video used in the demo |
 
 ## Prerequisites
 
 - An AWS account that can manage S3, IAM, Lambda, CloudFront and CloudWatch.
-- A short MP4 you have the rights to use.
 - A static Linux x86_64 FFmpeg binary with `libx264` and `aac`, packaged as a Lambda layer (not included here, see step 3).
 - The AWS CLI, only if you want to use `scripts/check-output.sh`.
 - Python 3, to serve the player locally.
@@ -48,7 +47,7 @@ This will cost a little money if you're outside the Free Tier. Delete everything
 ### 1. S3 bucket
 
 1. Create a bucket in `eu-north-1` (e.g. `your-streamnest-bucket`). Keep **Block all public access** on and use SSE-S3 encryption.
-2. Upload your video to `input/sample.mp4`. The `output/` prefix is created by the Lambda.
+2. Upload `media/sample.mp4` (or your own MP4) to `input/sample.mp4`. The `output/` prefix is created by the Lambda.
 
 ### 2. Lambda execution role
 
@@ -136,4 +135,4 @@ S3 event triggers, adaptive bitrate, DRM, viewer authentication, live streaming,
 
 ## Credits
 
-The original demo used forest footage by Ari ichorul / Vecteezy. That footage isn't included in this repo. See `LICENSE-NOTICE.md`.
+Sample forest footage by Ari ichorul / Vecteezy.
