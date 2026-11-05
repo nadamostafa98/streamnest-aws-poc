@@ -2,8 +2,6 @@
 
 StreamNest converts an MP4 into an HLS stream with AWS Lambda and FFmpeg, stores it in a private S3 bucket, and serves it through CloudFront using Origin Access Control (OAC). A local HTML page plays it back with HLS.js.
 
-> **Status:** The Lambda handler and player in this repo are a reconstruction based on the StreamNest architecture, not a copy of the originally deployed files. They have not yet been run end to end from this repo. Swap in the original code if you have it, or follow the steps below to test it.
-
 ## Architecture
 
 ```text
